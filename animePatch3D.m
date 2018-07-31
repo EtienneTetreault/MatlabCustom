@@ -30,10 +30,10 @@ for j = 1:nBodies
     PosOutput{j} = PosTemp;
 end
 
-LimMax2 = max(LimMax);
-LimMin2 = min(LimMin);
+LimMax2 = max(LimMax,[],1);
+LimMin2 = min(LimMin,[],1);
 Plage = 1.2*max(LimMax2-LimMin2);
-Center = mean([LimMax2;LimMin2]);
+Center = mean([LimMax2;LimMin2],1);
 VecAxis = [Center(1)-Plage/2 , Center(1)+Plage/2 , ...
     Center(2)-Plage/2  , Center(2)+Plage/2  ...
     Center(3)-Plage/2  , Center(3)+Plage/2 ];
