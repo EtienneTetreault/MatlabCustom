@@ -1,6 +1,20 @@
-function animePatch3D(PosCG,quat,PatchBodies,skip,delay)
+function animePatch3D(PosCG,quat,PatchBodies,skip,varargin)
 
+numvarargs = length(varargin);
+% Argument optionnel = [dt , event] ==> 2 argument max
+if numvarargs > 2
+    error('animePatch3D:TooManyInputs', ...
+        'requires at most 2 optional inputs');
+end
 
+if numvarargs == 1
+    t = varargin{:};
+end
+if numvarargs == 2
+    [t, event] = varargin{:};
+end
+    
+%% Création des points a utiliser pour les patchBody - Matrice de rotation
 %Data pour boucle
 nTime = size(PosCG,1);
 nBodies = size(PosCG,3);
@@ -30,6 +44,7 @@ for j = 1:nBodies
     PosOutput{j} = PosTemp;
 end
 
+%% Ajutement de la fenêtre d'animation
 LimMax2 = max(LimMax,[],1);
 LimMin2 = min(LimMin,[],1);
 Plage = 1.2*max(LimMax2-LimMin2);
@@ -57,13 +72,15 @@ axis(VecAxis)
 
 for i = 1:length(1:skip:nTime)
     for j = 1:nBodies
-        PosTemp = PosOutput{j};
-        PosDraw = PosTemp(:,:,i);
+        PosDraw = PosOutput{j}(:,:,i);
         patch('Vertices',PosDraw,'Faces',PatchBodies{j}.Faces,'FaceVertexCData',PatchBodies{j}.FaceVertexCData,'FaceColor','flat')
     end
+    h = annotation('textbox',[.9 .4 .1 .2],'String',['t = ',num2str(t(i))],'FontSize',16,'EdgeColor','none');
     drawnow;
-    pause()
-    %     cla
+    pause();
+    delete(h);
 end
+annotation('textbox',[.9 .4 .1 .2],'String',['t = ',num2str(t(i)),' - Fin'],'FontSize',16,'EdgeColor','none');
+
 
 % close(v)
