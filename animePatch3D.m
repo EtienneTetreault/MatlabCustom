@@ -69,18 +69,28 @@ axis(VecAxis)
 %         frame = getframe(gcf);
 %         writeVideo(v,frame);
 
-
-for i = 1:length(1:skip:nTime)
-    for j = 1:nBodies
-        PosDraw = PosOutput{j}(:,:,i);
-        patch('Vertices',PosDraw,'Faces',PatchBodies{j}.Faces,'FaceVertexCData',PatchBodies{j}.FaceVertexCData,'FaceColor','flat')
+if numvarargs == 0
+    for i = 1:length(1:skip:nTime)
+        for j = 1:nBodies
+            PosDraw = PosOutput{j}(:,:,i);
+            patch('Vertices',PosDraw,'Faces',PatchBodies{j}.Faces,'FaceVertexCData',PatchBodies{j}.FaceVertexCData,'FaceColor','flat')
+        end
+        drawnow;
+        pause();
     end
-    h = annotation('textbox',[.9 .4 .1 .2],'String',['t = ',num2str(t(i))],'FontSize',16,'EdgeColor','none');
-    drawnow;
-    pause();
-    delete(h);
 end
-annotation('textbox',[.9 .4 .1 .2],'String',['t = ',num2str(t(i)),' - Fin'],'FontSize',16,'EdgeColor','none');
-
+if numvarargs > 0
+    for i = 1:length(1:skip:nTime)
+        for j = 1:nBodies
+            PosDraw = PosOutput{j}(:,:,i);
+            patch('Vertices',PosDraw,'Faces',PatchBodies{j}.Faces,'FaceVertexCData',PatchBodies{j}.FaceVertexCData,'FaceColor','flat')
+        end
+        h = annotation('textbox',[.9 .4 .1 .2],'String',['t = ',num2str(t(i))],'FontSize',16,'EdgeColor','none');
+        drawnow;
+        pause();
+        delete(h);
+    end
+    annotation('textbox',[.9 .4 .1 .2],'String',['t = ',num2str(t(i)),' - Fin'],'FontSize',16,'EdgeColor','none');
+end
 
 % close(v)
