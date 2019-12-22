@@ -77,6 +77,7 @@ if numvarargs == 0
         end
         drawnow;
         pause();
+        i
     end
 end
 if numvarargs > 0
